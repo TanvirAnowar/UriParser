@@ -18,10 +18,16 @@ namespace VpUriParser
 
             //var result = QueryUtility.HttpQueryStringUtil(queryString);            
 
-            UriParserEnginer uriParser = new UriParserEnginer(queryString);
+            //UriParserEnginer uriParser = new UriParserEnginer(queryString);
 
+            //uriParser.ParserSelector();
+
+            queryString = @"mailto:sdf12@fds.com";
+            UriParserEnginer uriParser = new UriParserEnginer(queryString);
             uriParser.ParserSelector();
-             
+
+
+
 
 
 

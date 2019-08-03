@@ -16,7 +16,7 @@ namespace VpUriParser.UriParser
         private string[] getSegmentType()
         {
             //TODO: should come from setting file
-            return new string[] { "http", "https", "ldap", "mailto", "news", "tel", "telnet", "urn" };
+            return new string[] { "http", "https", "mailto", "ldap", "news", "tel", "telnet", "urn" };
         }
 
         // Set the URI in property and find the schema type 
@@ -64,7 +64,13 @@ namespace VpUriParser.UriParser
 
             if (Schema.Equals(segmentType[0]) || Schema.Equals(segmentType[1]))
             {
+                // For http and https Schema
                 this.HttpParser();
+            }else if(Schema.Equals(segmentType[2]))
+            {
+                this.MailParser();
+
+
             }
 
         }
@@ -86,6 +92,19 @@ namespace VpUriParser.UriParser
 
             // Building accessable model with the parsed data
             var uriModel = QueryUtility.MakeUriModelWithParsedData(data,authorityInfo,queryStringKeyValues);
+
+            return uriModel;
+        }
+
+        // Parser URI sagment for mailto:
+        public UriModel MailParser()
+        {
+            string regexPattern = @"^((?<schema>[^:/\?#]+):)?"
+                                + @"((?<path>[^/\?#]*))?";
+            var data = this.regexExecutor(regexPattern,QueryString);
+
+            // Building accessable model with the parsed data
+            var uriModel = QueryUtility.MakeUriModelWithParsedData(data, null, null);
 
             return uriModel;
         }

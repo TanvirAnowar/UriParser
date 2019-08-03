@@ -108,9 +108,9 @@ namespace VpUriParse.UriParser
             uriModel.Query = data.Groups["query"].Value ?? "";
             uriModel.Fragment = data.Groups["fragment"].Value ?? "";
 
-            uriModel.UserInfo = authorityInfo.Item1 ?? "";
-            uriModel.Port = authorityInfo.Item2 ?? "";
-            uriModel.Host = authorityInfo.Item3 ?? "";
+            uriModel.UserInfo = (authorityInfo == null) ? "": authorityInfo.Item1 ;
+            uriModel.Port = (authorityInfo == null) ? "" : authorityInfo.Item2;
+            uriModel.Host = (authorityInfo == null) ? "" : authorityInfo.Item3;
 
             uriModel.QueryStringInfo = queryStringInfo;
 

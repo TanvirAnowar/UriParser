@@ -51,6 +51,21 @@ namespace VpUriParse.Tests
 
         }
 
+        [Theory]
+        [InlineData("mailto:user123@gmail.com")]
+        public void MailParserr_Test_MailTo(string url)
+        {
+            UriParserEnginer uriParser = new UriParserEnginer(url);
+
+            var data = uriParser.MailParser();
+
+            Assert.Equal("mailto", data.Scheme);
+            Assert.Equal("user123@gmail.com", data.Path);
+            
+        }
+
+
+
 
     }
 }
