@@ -44,6 +44,35 @@ namespace VpUriParse.UriParser
             return (data.Length > 1) ? data[1] : "";
         }
 
+        // Make a dictionary collection of key value pair of the Query segment of URI
+        public static IDictionary<string, string> HttpQueryStringUtil(string queryString)
+        {
+            queryString = HttpUtility.UrlDecode(queryString);
+
+            var content = queryString.Split("&");
+
+            IDictionary<string, string> keyValue = new Dictionary<string, string>();
+           
+            foreach (var item in content)
+            {
+                var tempData = getKeyValuePairUtil(item);
+                keyValue.Add(tempData.Item1, tempData.Item2);
+            }  
+
+            return keyValue;         
+
+        }
+
+        //Split the set of query string into Key Value pair 
+        private static Tuple<string, string> getKeyValuePairUtil(string item)
+        {
+            var tempData = item.Split("=");
+            string keyString = tempData[0].Trim();
+            string valueString = tempData[1].Trim();
+
+            return Tuple.Create(keyString,valueString);
+        }
+
     }
     
 }

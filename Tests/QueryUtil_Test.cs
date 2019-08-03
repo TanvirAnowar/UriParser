@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
 using VpUriParse.UriParser;
 using VpUriParser.Models;
 using Xunit;
@@ -33,6 +36,16 @@ namespace VpUriParse.Tests
             var result = QueryUtility.HttpAuthorityUtil(queryString);
 
             Assert.Equal("4200", result.Item2);
+        }
+
+        [Theory]
+        [InlineData("contentUrl=https%3A%2F%2Fmemegenerator.net%2FJohnDoe%26reason%3Dpersonal%2520information%2520exposed%26email%3Demail%40domain.com%26apiKey%3Ddemo")]
+        public void HttpQueryStringUtil_Test_QueryString(string queryString)
+        {
+            var result = QueryUtility.HttpQueryStringUtil(queryString);
+           
+            Assert.Equal(result.Keys.ElementAt(3), "apiKey");
+            Assert.Equal(result[result.Keys.ElementAt(3)], "demo");
         }
     }
 }

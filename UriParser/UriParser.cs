@@ -83,10 +83,6 @@ namespace VpUriParser.UriParser
             //TODO: should manage by DTO
             UriModel uriModel = new UriModel();
             return uriModel;
-
-
-
-
         }
     }
 }
