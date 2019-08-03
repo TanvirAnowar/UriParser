@@ -52,6 +52,17 @@ namespace VpUriParse.Tests
         }
 
         [Theory]
+        [InlineData("http://max@version1.api.memegenerator.net:5000/Comment_Create?entityName=Instance&entityID=72628355&parentCommentID=&text=first%20post%20best%20post&apiKey=demo#frag")]
+        public void ParserSelector_Test_Http(string url)
+        {
+            UriParserEnginer uriParser = new UriParserEnginer(url);
+
+            uriParser.ParserSelector();
+
+            Assert.Equal("http",uriParser.Schema);            
+        }
+
+        [Theory]
         [InlineData("mailto:user123@gmail.com")]
         public void MailParserr_Test_MailTo(string url)
         {

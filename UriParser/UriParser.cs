@@ -58,19 +58,22 @@ namespace VpUriParser.UriParser
         }
 
         //Select differnt parsing logic based on Segment type
-        public void ParserSelector()
+        public UriModel ParserSelector()
         {
             var segmentType = this.getSegmentType();
 
             if (Schema.Equals(segmentType[0]) || Schema.Equals(segmentType[1]))
             {
                 // For http and https Schema
-                this.HttpParser();
+                return this.HttpParser();
             }else if(Schema.Equals(segmentType[2]))
             {
-                this.MailParser();
+                // For mailto Schema
+                return this.MailParser();
 
-
+            }else{
+                // TODO: Implement other types of URI Parser
+                return null;
             }
 
         }
