@@ -1,4 +1,5 @@
-
+using System;
+using System.Linq;
 using VpUriParser.Models;
 using VpUriParser.UriParser;
 using Xunit;
@@ -12,7 +13,7 @@ namespace VpUriParse.Tests
         {
             UriModel uriModel = new UriModel();
 
-            Assert.NotNull(uriModel);        
+            Assert.NotNull(uriModel);
         }
 
         [Theory]
@@ -32,17 +33,24 @@ namespace VpUriParse.Tests
         }
 
         [Theory]
-        [InlineData("http://version1.api.memegenerator.net/Comment_Create?entityName=Instance&entityID=72628355&parentCommentID=&text=first%20post%20best%20post&apiKey=demo")]
+        [InlineData("http://max@version1.api.memegenerator.net:5000/Comment_Create?entityName=Instance&entityID=72628355&parentCommentID=&text=first%20post%20best%20post&apiKey=demo#frag")]
         public void HttpParser_Test_Http(string url)
         {
             UriParserEnginer uriParser = new UriParserEnginer(url);
 
             var data = uriParser.HttpParser();
 
-           // Assert.Equal(""data.)
+            Assert.Equal("http", data.Scheme);
+            Assert.Equal("max", data.UserInfo);
+            Assert.Equal("5000", data.Port);
+            Assert.Equal("/comment_create", data.Path);
+            Assert.Equal("frag", data.Fragment);
+            Assert.Equal("max@version1.api.memegenerator.net:5000", data.Authority);
+            Assert.Equal("entityid", data.QueryStringInfo.Keys.ElementAt(1));
+            Assert.Equal("72628355", data.QueryStringInfo[data.QueryStringInfo.Keys.ElementAt(1)]);
 
         }
 
-        
+
     }
 }
