@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using VpUriParse.UriParser;
 using VpUriParser.Models;
 
 namespace VpUriParser.UriParser
@@ -14,7 +15,7 @@ namespace VpUriParser.UriParser
 
         private string[] getSegmentType()
         {
-            //todo: should come from setting file
+            //TODO: should come from setting file
             return new string[] { "http", "https", "ldap", "mailto", "news", "tel", "telnet", "urn" };
         }
 
@@ -27,7 +28,6 @@ namespace VpUriParser.UriParser
         }
 
         // Identify the type of URI and distribute the task accordingly 
-
         public void SchemaIdentifier()
         {
             var segments = this.getSegmentType();
@@ -36,6 +36,7 @@ namespace VpUriParser.UriParser
             {
                 //matching pattern URI Segment
                 string regexPattern = $"^{segment}:";
+                Schema = "";
 
                 var data = this.regexExecutor(regexPattern, QueryString.ToLower());
 
@@ -80,8 +81,12 @@ namespace VpUriParser.UriParser
 
             var data = this.regexExecutor(regexPattern, QueryString.ToLower());
 
-            //TODO: should manage by DTO
-            UriModel uriModel = new UriModel();
+            var authorityInfo = QueryUtility.HttpAuthorityUtil(data.Groups["authority"].Value);
+            var queryStringKeyValues = QueryUtility.HttpQueryStringUtil(data.Groups["query"].Value);
+
+            // Building accessable model with the parsed data
+            var uriModel = QueryUtility.MakeUriModelWithParsedData(data,authorityInfo,queryStringKeyValues);
+
             return uriModel;
         }
     }

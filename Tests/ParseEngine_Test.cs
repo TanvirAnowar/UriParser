@@ -30,6 +30,19 @@ namespace VpUriParse.Tests
 
             Assert.NotNull(uriParser.Schema);
         }
+
+        [Theory]
+        [InlineData("http://version1.api.memegenerator.net/Comment_Create?entityName=Instance&entityID=72628355&parentCommentID=&text=first%20post%20best%20post&apiKey=demo")]
+        public void HttpParser_Test_Http(string url)
+        {
+            UriParserEnginer uriParser = new UriParserEnginer(url);
+
+            var data = uriParser.HttpParser();
+
+           // Assert.Equal(""data.)
+
+        }
+
         
     }
 }

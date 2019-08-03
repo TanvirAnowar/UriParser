@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using VpUriParse.UriParser;
 using VpUriParser.UriParser;
 
 namespace VpUriParser
@@ -9,17 +8,23 @@ namespace VpUriParser
     {
         static void Main(string[] args)
         {
-            // string queryString = @"contentUrl=https%3A%2F%2Fmemegenerator.net%2FJohnDoe%26reason%3Dpersonal%2520information%2520exposed%26email%3Demail%40domain.com%26apiKey%3Ddemo";
-
+            // string queryString = @"http://userx@version1.api.memegenerator.net:4000/Comment_Create?entityName=Instance&entityID=72628355&parentCommentID=&text=first%20post%20best%20post&apiKey=demo";
+            string queryString = @"http://www.google.com/";
             // UriParser uriParser = new UriParser(queryString);
 
             // uriParser.ParserSelector();
 
             //  QueryUtility.HttpAuthorityUtil("sdfds.com:223");
 
-            //var result = QueryUtility.HttpQueryStringUtil(queryString);
+            //var result = QueryUtility.HttpQueryStringUtil(queryString);            
 
-           
+            UriParserEnginer uriParser = new UriParserEnginer(queryString);
+
+            uriParser.ParserSelector();
+             
+
+
+
 
         }
     }

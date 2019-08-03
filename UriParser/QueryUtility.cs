@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web;
+using VpUriParser.Models;
 
 namespace VpUriParse.UriParser
 {
@@ -10,7 +12,7 @@ namespace VpUriParse.UriParser
     public class QueryUtility
     {
         //Getting the Username and port from the Authority string
-        public static Tuple<string, string> HttpAuthorityUtil(string authorityString)
+        public static Tuple<string, string,string> HttpAuthorityUtil(string authorityString)
         {
             // TODO: Should use Regular Expression instead of string operation.
 
@@ -18,24 +20,38 @@ namespace VpUriParse.UriParser
 
             var queryData = cleanQuery.Split('@');
 
-            string port, userName;
+            string host, port, userName;
 
             if (queryData.Length > 1)
             {
                 port = getPort(queryData[1]);
                 userName = queryData[0];
+                host = getHost(queryData[1]);
+
             }
             else
             {
                 port = getPort(queryData[0]);
                 userName = "";
+                host = getHost(queryData[0]);
+
             }
 
-            return Tuple.Create(userName, port);
+
+            return Tuple.Create(userName, port,host);
 
         }
 
-        // Parsing the port from authority string        
+        // Parsing the Host from authority string 
+
+        private static string getHost(string queryString)
+        {
+            var data = queryString.Split(":");
+
+            return (data.Length > 1) ? data[0] : queryString;
+        }
+
+        // Parsing the port from authority string 
 
         private static string getPort(string queryString)
         {
@@ -66,11 +82,40 @@ namespace VpUriParse.UriParser
         //Split the set of query string into Key Value pair 
         private static Tuple<string, string> getKeyValuePairUtil(string item)
         {
+            string keyString = "";
+            string valueString = "";
             var tempData = item.Split("=");
-            string keyString = tempData[0].Trim();
-            string valueString = tempData[1].Trim();
+            if(tempData.Length > 0)
+            {
+                 keyString = tempData[0].Trim();
+                 valueString = tempData[1].Trim();
+            }
 
             return Tuple.Create(keyString,valueString);
+        }
+
+        // Make Model for URI segments
+
+        public static UriModel MakeUriModelWithParsedData(Match data,Tuple<string,string,string> authorityInfo,IDictionary<string,string> queryStringInfo)
+        {
+            //TODO: should manage by DTO
+
+            UriModel uriModel = new UriModel();
+
+            uriModel.Scheme =  data.Groups["schema"].Value ?? "";
+            uriModel.Authority = data.Groups["authority"].Value ?? "";
+            uriModel.Path = data.Groups["path"].Value ?? "";
+            uriModel.Query = data.Groups["query"].Value ?? "";
+            uriModel.Fragment = data.Groups["fragment"].Value ?? "";
+
+            uriModel.UserInfo = authorityInfo.Item1 ?? "";
+            uriModel.Port = authorityInfo.Item2 ?? "";
+            uriModel.Host = authorityInfo.Item3 ?? "";
+
+            uriModel.QueryStringInfo = queryStringInfo;
+
+            return uriModel;
+            
         }
 
     }
