@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
+using VpUriParser.Models;
 
-namespace VpUriParse.UriParser
+namespace VpUriParser.UriParser
 {
     /* 
     This class is responsible for parsing data from URI string
@@ -46,13 +47,46 @@ namespace VpUriParse.UriParser
                 }
             }
 
-        }
+        }        
 
         // Execute the regular expression and return the group data
         private Match regexExecutor(string regexPattern, string queryString)
         {
             Regex re = new Regex(regexPattern, RegexOptions.ExplicitCapture);
             return re.Match(queryString);
+        }
+
+        //Select differnt parsing logic based on Segment type
+        public void ParserSelector()
+        {
+            var segmentType = this.getSegmentType();
+
+            if (Schema.Equals(segmentType[0]) || Schema.Equals(segmentType[1]))
+            {
+                this.HttpParser();
+            }
+
+        }
+
+        // Parser URI segments for HTTP/HTTPS
+        public UriModel HttpParser()
+        {
+            //Help - https://www.cambiaresearch.com/articles/46/parsing-urls-with-regular-expressions-and-the-regex-object
+            string regexPattern = @"^((?<schema>[^:/\?#]+):)?"
+                                + @"(//(?<authority>[^/\?#]*))?"
+                                + @"(?<path>[^\?#]*)"
+                                + @"(\?(?<query>[^#]*))?"
+                                + @"(#(?<fragment>.*))?";
+
+            var data = this.regexExecutor(regexPattern, QueryString.ToLower());
+
+            //TODO: should manage by DTO
+            UriModel uriModel = new UriModel();
+            return uriModel;
+
+
+
+
         }
     }
 }

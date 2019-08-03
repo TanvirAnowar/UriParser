@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace VpUriParse.Models
+namespace VpUriParser.Models
 {
     // UriModel holds the fragmented data after parsing the URI
     public class UriModel

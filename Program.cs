@@ -1,4 +1,5 @@
 ﻿using System;
+using VpUriParser.UriParser;
 
 namespace VpUriParser
 {
@@ -6,7 +7,13 @@ namespace VpUriParser
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+           // string queryString = @"https://john.doe@www.example.com:123/forum/questions/?tag=networking&order=newest#top";
+
+           // UriParser uriParser = new UriParser(queryString);
+
+            // uriParser.ParserSelector();
+
+          //  QueryUtility.HttpAuthorityUtil("sdfds.com:223");
         }
     }
 }

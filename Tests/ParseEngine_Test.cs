@@ -1,5 +1,6 @@
-using VpUriParse.Models;
-using VpUriParse.UriParser;
+
+using VpUriParser.Models;
+using VpUriParser.UriParser;
 using Xunit;
 
 namespace VpUriParse.Tests
